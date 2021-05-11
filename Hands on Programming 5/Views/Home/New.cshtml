@@ -1,0 +1,52 @@
+﻿@model VolunteerList
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>New</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="Firstname">First Name</label>
+        @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control", ID = "Firstname", placeholder = "First Name", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
+
+    </div>
+
+    <div class="form-group">
+        <label for="Lastname">Last Name</label>
+        @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control", ID = "Lastname", placeholder = "Last Name", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+
+    </div>
+    <div class="form-group">
+        <label for="sex_id">Gender</label>
+        @Html.DropDownListFor(model => model.sex_id, (IEnumerable<SelectListItem>)ViewData["gender"], "- Select -", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.sex_id, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label for="Birthdate">Birthdate</label>
+
+        @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control datepicker", ID = "Birthdate", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+
+    </div>
+    <div class="form-group">
+
+        <label for="region_code">Region Code</label>
+        @Html.DropDownListFor(model => model.region_code, (IEnumerable<SelectListItem>)ViewData["region"], "- Select -", htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.region_code, "", new { @class = "text-danger" })
+    </div>
+
+
+    @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-default float-right btn-flat" })
+    <button type="submit" class="btn btn-success float-right btn-flat">Save</button>
+
+
+
+
+
+
+}

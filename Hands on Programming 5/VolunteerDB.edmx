@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VolunteerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="lib_regions">
+          <Key>
+            <PropertyRef Name="region_code" />
+          </Key>
+          <Property Name="region_code" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="region_name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="lib_sex">
+          <Key>
+            <PropertyRef Name="sex_id" />
+          </Key>
+          <Property Name="sex_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="VolunteerList">
+          <Key>
+            <PropertyRef Name="VolunteerId" />
+          </Key>
+          <Property Name="VolunteerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Firstname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lastname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Birthdate" Type="datetime" />
+          <Property Name="sex_id" Type="int" />
+          <Property Name="region_code" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK_VolunteerList_lib_regions">
+          <End Role="lib_regions" Type="Self.lib_regions" Multiplicity="0..1" />
+          <End Role="VolunteerList" Type="Self.VolunteerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lib_regions">
+              <PropertyRef Name="region_code" />
+            </Principal>
+            <Dependent Role="VolunteerList">
+              <PropertyRef Name="region_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VolunteerList_lib_sex">
+          <End Role="lib_sex" Type="Self.lib_sex" Multiplicity="0..1" />
+          <End Role="VolunteerList" Type="Self.VolunteerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lib_sex">
+              <PropertyRef Name="sex_id" />
+            </Principal>
+            <Dependent Role="VolunteerList">
+              <PropertyRef Name="sex_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VolunteerDBModelStoreContainer">
+          <EntitySet Name="lib_regions" EntityType="Self.lib_regions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="lib_sex" EntityType="Self.lib_sex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VolunteerList" EntityType="Self.VolunteerList" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_VolunteerList_lib_regions" Association="Self.FK_VolunteerList_lib_regions">
+            <End Role="lib_regions" EntitySet="lib_regions" />
+            <End Role="VolunteerList" EntitySet="VolunteerList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VolunteerList_lib_sex" Association="Self.FK_VolunteerList_lib_sex">
+            <End Role="lib_sex" EntitySet="lib_sex" />
+            <End Role="VolunteerList" EntitySet="VolunteerList" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VolunteerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="lib_regions">
+          <Key>
+            <PropertyRef Name="region_code" />
+          </Key>
+          <Property Name="region_code" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="region_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="VolunteerLists" Relationship="Self.FK_VolunteerList_lib_regions" FromRole="lib_regions" ToRole="VolunteerList" />
+        </EntityType>
+        <EntityType Name="lib_sex">
+          <Key>
+            <PropertyRef Name="sex_id" />
+          </Key>
+          <Property Name="sex_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="VolunteerLists" Relationship="Self.FK_VolunteerList_lib_sex" FromRole="lib_sex" ToRole="VolunteerList" />
+        </EntityType>
+        <EntityType Name="VolunteerList">
+          <Key>
+            <PropertyRef Name="VolunteerId" />
+          </Key>
+          <Property Name="VolunteerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Birthdate" Type="DateTime" Precision="3" />
+          <Property Name="sex_id" Type="Int32" />
+          <Property Name="region_code" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="lib_regions" Relationship="Self.FK_VolunteerList_lib_regions" FromRole="VolunteerList" ToRole="lib_regions" />
+          <NavigationProperty Name="lib_sex" Relationship="Self.FK_VolunteerList_lib_sex" FromRole="VolunteerList" ToRole="lib_sex" />
+        </EntityType>
+        <Association Name="FK_VolunteerList_lib_regions">
+          <End Role="lib_regions" Type="Self.lib_regions" Multiplicity="0..1" />
+          <End Role="VolunteerList" Type="Self.VolunteerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lib_regions">
+              <PropertyRef Name="region_code" />
+            </Principal>
+            <Dependent Role="VolunteerList">
+              <PropertyRef Name="region_code" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VolunteerList_lib_sex">
+          <End Role="lib_sex" Type="Self.lib_sex" Multiplicity="0..1" />
+          <End Role="VolunteerList" Type="Self.VolunteerList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="lib_sex">
+              <PropertyRef Name="sex_id" />
+            </Principal>
+            <Dependent Role="VolunteerList">
+              <PropertyRef Name="sex_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VolunteerDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="lib_regions" EntityType="Self.lib_regions" />
+          <EntitySet Name="lib_sex" EntityType="Self.lib_sex" />
+          <EntitySet Name="VolunteerLists" EntityType="Self.VolunteerList" />
+          <AssociationSet Name="FK_VolunteerList_lib_regions" Association="Self.FK_VolunteerList_lib_regions">
+            <End Role="lib_regions" EntitySet="lib_regions" />
+            <End Role="VolunteerList" EntitySet="VolunteerLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VolunteerList_lib_sex" Association="Self.FK_VolunteerList_lib_sex">
+            <End Role="lib_sex" EntitySet="lib_sex" />
+            <End Role="VolunteerList" EntitySet="VolunteerLists" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VolunteerDBModelStoreContainer" CdmEntityContainer="VolunteerDBEntities">
+          <EntitySetMapping Name="lib_regions">
+            <EntityTypeMapping TypeName="VolunteerDBModel.lib_regions">
+              <MappingFragment StoreEntitySet="lib_regions">
+                <ScalarProperty Name="region_code" ColumnName="region_code" />
+                <ScalarProperty Name="region_name" ColumnName="region_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="lib_sex">
+            <EntityTypeMapping TypeName="VolunteerDBModel.lib_sex">
+              <MappingFragment StoreEntitySet="lib_sex">
+                <ScalarProperty Name="sex_id" ColumnName="sex_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VolunteerLists">
+            <EntityTypeMapping TypeName="VolunteerDBModel.VolunteerList">
+              <MappingFragment StoreEntitySet="VolunteerList">
+                <ScalarProperty Name="VolunteerId" ColumnName="VolunteerId" />
+                <ScalarProperty Name="Firstname" ColumnName="Firstname" />
+                <ScalarProperty Name="Lastname" ColumnName="Lastname" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="sex_id" ColumnName="sex_id" />
+                <ScalarProperty Name="region_code" ColumnName="region_code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
